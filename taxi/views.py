@@ -65,4 +65,3 @@ class ManufacturerDeleteView(
     model = Manufacturer
     success_url = reverse_lazy("taxi:manufacturer-list")
     success_message = "Manufacturer was deleted!"
-

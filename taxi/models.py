@@ -55,22 +55,17 @@ class Comment(models.Model):
         ordering = ("-date",)
 
     def __str__(self):
-        return f"Comment: {self.content} " \
-               f"from {self.user.username} " \
-               f"at {self.date}"
+        return (
+            f"Comment: {self.content} " f"from {self.user.username} " f"at {self.date}"
+        )
 
 
 class Car(models.Model):
     model = models.CharField(max_length=255)
-    manufacturer = models.ForeignKey(Manufacturer,
-                                     on_delete=models.CASCADE)
-    drivers = models.ManyToManyField(Driver,
-                                     related_name="cars")
-    comments = models.ManyToManyField(Comment,
-                                      related_name="comments", blank=True)
-    image = models.ImageField(null=True,
-                              blank=True,
-                              upload_to=path_to_image)
+    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE)
+    drivers = models.ManyToManyField(Driver, related_name="cars")
+    comments = models.ManyToManyField(Comment, related_name="comments", blank=True)
+    image = models.ImageField(null=True, blank=True, upload_to=path_to_image)
 
     class Meta:
         ordering = ("id",)
@@ -80,8 +75,7 @@ class Car(models.Model):
 
     def average_rating(self) -> float:
         return (
-            Rating.objects.filter(car=self).aggregate(
-                Avg("rating"))["rating__avg"] or 0
+            Rating.objects.filter(car=self).aggregate(Avg("rating"))["rating__avg"] or 0
         )
 
 
