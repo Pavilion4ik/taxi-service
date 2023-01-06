@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
@@ -107,3 +108,46 @@ class CarDeleteView(SuccessMessageMixin,
     model = Car
     success_url = reverse_lazy("taxi:car-list")
     success_message = "Car was successfully deleted!"
+
+
+class DriverListView(LoginRequiredMixin,
+                     generic.ListView):
+    model = Driver
+    paginate_by = 5
+    queryset = Driver.objects.all()
+
+
+class DriverDetailView(LoginRequiredMixin,
+                       generic.DetailView):
+    model = Driver
+    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(SuccessMessageMixin,
+                       LoginRequiredMixin,
+                       generic.CreateView):
+    model = Driver
+    success_message = "Driver was successfully created!"
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin,
+                              generic.UpdateView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverDeleteView(LoginRequiredMixin,
+                       generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+@login_required
+def toggle_assign_to_car(request, pk):
+    driver = Driver.objects.get(id=request.user.id)
+    if Car.objects.get(id=pk) in driver.cars.all():
+        driver.cars.remove(pk)
+    else:
+        driver.cars.add(pk)
+    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
+
