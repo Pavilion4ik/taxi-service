@@ -65,3 +65,45 @@ class ManufacturerDeleteView(
     model = Manufacturer
     success_url = reverse_lazy("taxi:manufacturer-list")
     success_message = "Manufacturer was deleted!"
+
+
+class CarListView(LoginRequiredMixin, generic.ListView):
+    model = Car
+    paginate_by = 5
+    queryset = (
+        Car.objects.all()
+        .prefetch_related("comments", "drivers")
+        .select_related("manufacturer")
+    )
+
+
+class CarDetailView(SuccessMessageMixin,
+                    LoginRequiredMixin,
+                    generic.DetailView):
+    model = Car
+    success_message = "Comment was added!"
+    queryset = Car.objects.all().prefetch_related("comments").all()
+
+
+class CarCreateView(SuccessMessageMixin,
+                    LoginRequiredMixin,
+                    generic.CreateView):
+    model = Car
+    success_url = reverse_lazy("taxi:car-list")
+    success_message = "Car was created!"
+
+
+class CarUpdateView(SuccessMessageMixin,
+                    LoginRequiredMixin,
+                    generic.UpdateView):
+    model = Car
+    success_url = reverse_lazy("taxi:car-list")
+    success_message = "Car was successfully updated!"
+
+
+class CarDeleteView(SuccessMessageMixin,
+                    LoginRequiredMixin,
+                    generic.DeleteView):
+    model = Car
+    success_url = reverse_lazy("taxi:car-list")
+    success_message = "Car was successfully deleted!"
