@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +27,10 @@ SECRET_KEY = "django-insecure-8c=wq(4(12$u=kw-z(9*e*6qq)t=36y5t%j)3l9=ibyrqq4m6)
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 
 # Application definition
@@ -70,6 +75,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "taxi_service.wsgi.application"
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
 # Database
@@ -118,6 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
