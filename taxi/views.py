@@ -188,6 +188,10 @@ class CarImageUpdateView(SuccessMessageMixin,
     template_name = "taxi/car_image_update.html"
     success_message = "Image was successfully updated!"
 
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("taxi:car-detail",
+                            kwargs={"pk": self.get_object().id})
+
 
 class CommentDeleteView(SuccessMessageMixin,
                         LoginRequiredMixin,

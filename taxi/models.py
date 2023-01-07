@@ -21,12 +21,14 @@ class Manufacturer(models.Model):
 def path_to_image(instance, filename):
     """"""
     _, extension = os.path.splitext(filename)
-    if instance.username:
-        filename = f"{slugify(instance.username)}-{uuid.uuid4()}{extension}"
-        return os.path.join("uploads/avatars/", filename)
-    elif instance.model:
-        filename = f"{slugify({instance.model})}-{uuid.uuid4()}{extension}"
-        return os.path.join("uploads/car_images/", filename)
+    try:
+        if instance.username:
+            filename = f"{slugify(instance.username)}-{uuid.uuid4()}{extension}"
+            return os.path.join("uploads/avatars/", filename)
+    except AttributeError:
+        if instance.model:
+            filename = f"{slugify({instance.model})}-{uuid.uuid4()}{extension}"
+            return os.path.join("uploads/car_images/", filename)
 
 
 class Driver(AbstractUser):
