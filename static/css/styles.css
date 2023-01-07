@@ -77,40 +77,6 @@ body {
     min-height: 100vh;
 }
 
-.footer {
-    background-color: lavenderblush;
-    margin-top: auto;
-    padding: 15px 0 0 0;
-}
-
-.instagram {
-    width: 25px;
-    height: 25px;
-    margin-right: 6px;
-}
-.telegram {
-    width: 25px;
-    height: 25px;
-    margin-right: 6px;
-}
-.twitter {
-    width: 25px;
-    height: 25px;
-    margin-right: 6px;
-}
-.facebook {
-    width: 25px;
-    height: 25px;
-}
-
-.social {
-    margin-left: 750px;
-}
-
-#footer_links {
-    margin-left: 697px;
-}
-
 .copyright {
     margin-left: 750px;
 }
