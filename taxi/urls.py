@@ -1,3 +1,4 @@
+from django.contrib.auth.views import LogoutView
 from django.urls import path
 
 from . import views
@@ -23,6 +24,8 @@ from .views import (
     toggle_assign_to_car,
     DriverAvatarUpdateView,
     CarImageUpdateView,
+    login_view,
+    register_user,
 )
 
 urlpatterns = [
@@ -68,15 +71,9 @@ urlpatterns = [
         name="car-image-update",
     ),
     path("drivers/", DriverListView.as_view(), name="driver-list"),
-    path("drivers/<int:pk>/",
-         DriverDetailView.as_view(),
-         name="driver-detail"),
-    path("drivers/",
-         DriverListView.as_view(),
-         name="driver-list"),
-    path("drivers/<int:pk>/",
-         DriverDetailView.as_view(),
-         name="driver-detail"),
+    path("drivers/<int:pk>/", DriverDetailView.as_view(), name="driver-detail"),
+    path("drivers/", DriverListView.as_view(), name="driver-list"),
+    path("drivers/<int:pk>/", DriverDetailView.as_view(), name="driver-detail"),
     path("drivers/create/", DriverCreateView.as_view(), name="driver-create"),
     path(
         "drivers/<int:pk>/update/",
@@ -93,7 +90,9 @@ urlpatterns = [
         DriverDeleteView.as_view(),
         name="driver-delete",
     ),
-    path("register/", RegisterCreateView.as_view(), name="user-register"),
+    path("login/", login_view, name="login"),
+    path("register/", register_user, name="register"),
+    path("logout/", login_view, name="logout"),
     path(
         "cars/<int:id>/comment/<int:pk>/delete/",
         CommentDeleteView.as_view(),

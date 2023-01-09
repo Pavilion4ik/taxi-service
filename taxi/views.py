@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
@@ -16,6 +17,8 @@ from .forms import (
     CommentForm,
     DriverAvatarUpdateForm,
     CarImageUpdateForm,
+    SignUpForm,
+    LoginForm,
 )
 
 
@@ -81,8 +84,9 @@ class ManufacturerUpdateView(
     SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView
 ):
     model = Manufacturer
-    fields = "__all__"
     success_url = reverse_lazy("taxi:manufacturer-list")
+    fields = "__all__"
+    template_name = "taxi/manufacturer_form.html"
     success_message = "Manufacturer was updated!"
 
 
@@ -121,9 +125,7 @@ class CarListView(LoginRequiredMixin, generic.ListView):
         return self.queryset
 
 
-class CarDetailView(SuccessMessageMixin,
-                    LoginRequiredMixin,
-                    generic.DetailView):
+class CarDetailView(SuccessMessageMixin, LoginRequiredMixin, generic.DetailView):
     model = Car
     form = CommentForm
     success_message = "Comment was added!"
@@ -136,9 +138,7 @@ class CarDetailView(SuccessMessageMixin,
             form.instance.user = request.user
             form.instance.car = car
             form.save()
-            return redirect(reverse_lazy(
-                "taxi:car-detail", args=[str(car.id)])
-            )
+            return redirect(reverse_lazy("taxi:car-detail", args=[str(car.id)]))
 
     def get_context_data(self, **kwargs):
         context = super(CarDetailView, self).get_context_data(**kwargs)
@@ -154,59 +154,46 @@ class CarDetailView(SuccessMessageMixin,
         return context
 
 
-class CarCreateView(SuccessMessageMixin,
-                    LoginRequiredMixin,
-                    generic.CreateView):
+class CarCreateView(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
     model = Car
     form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
     success_message = "Car was created!"
 
 
-class CarUpdateView(SuccessMessageMixin,
-                    LoginRequiredMixin,
-                    generic.UpdateView):
+class CarUpdateView(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
     model = Car
     form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
     success_message = "Car was successfully updated!"
 
 
-class CarDeleteView(SuccessMessageMixin,
-                    LoginRequiredMixin,
-                    generic.DeleteView):
+class CarDeleteView(SuccessMessageMixin, LoginRequiredMixin, generic.DeleteView):
     model = Car
     success_url = reverse_lazy("taxi:car-list")
     success_message = "Car was successfully deleted!"
 
 
-class CarImageUpdateView(SuccessMessageMixin,
-                         LoginRequiredMixin,
-                         generic.UpdateView):
+class CarImageUpdateView(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
     model = Car
     form_class = CarImageUpdateForm
     template_name = "taxi/car_image_update.html"
     success_message = "Image was successfully updated!"
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy("taxi:car-detail",
-                            kwargs={"pk": self.get_object().id})
+        return reverse_lazy("taxi:car-detail", kwargs={"pk": self.get_object().id})
 
 
-class CommentDeleteView(SuccessMessageMixin,
-                        LoginRequiredMixin,
-                        generic.DeleteView):
+class CommentDeleteView(SuccessMessageMixin, LoginRequiredMixin, generic.DeleteView):
     model = Comment
     success_url = reverse_lazy("")
     success_message = "Comment successfully deleted!"
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy("taxi:car-detail",
-                            kwargs={"pk": self.get_object().car.id})
+        return reverse_lazy("taxi:car-detail", kwargs={"pk": self.get_object().car.id})
 
 
-class DriverListView(LoginRequiredMixin,
-                     generic.ListView):
+class DriverListView(LoginRequiredMixin, generic.ListView):
     model = Driver
     paginate_by = 5
     queryset = Driver.objects.all()
@@ -216,9 +203,7 @@ class DriverListView(LoginRequiredMixin,
 
         username = self.request.GET.get("username", "")
 
-        context["search_form"] = DriverSearchForm(
-            initial={"username": username}
-        )
+        context["search_form"] = DriverSearchForm(initial={"username": username})
 
         return context
 
@@ -230,31 +215,25 @@ class DriverListView(LoginRequiredMixin,
         return self.queryset
 
 
-class DriverDetailView(LoginRequiredMixin,
-                       generic.DetailView):
+class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
 
 
-class DriverCreateView(SuccessMessageMixin,
-                       LoginRequiredMixin,
-                       generic.CreateView):
+class DriverCreateView(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
     model = Driver
     form_class = DriverCreationForm
     success_message = "Driver was successfully created!"
 
 
-class DriverLicenseUpdateView(LoginRequiredMixin,
-                              generic.UpdateView):
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
     form_class = DriverLicenseUpdateForm
     success_url = reverse_lazy("taxi:driver-list")
 
 
 class DriverAvatarUpdateView(
-    SuccessMessageMixin,
-    LoginRequiredMixin,
-    generic.UpdateView
+    SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView
 ):
     model = Driver
     form_class = DriverAvatarUpdateForm
@@ -262,12 +241,10 @@ class DriverAvatarUpdateView(
     success_message = "Avatar was successfully updated!"
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy("taxi:driver-detail",
-                            kwargs={"pk": self.get_object().id})
+        return reverse_lazy("taxi:driver-detail", kwargs={"pk": self.get_object().id})
 
 
-class DriverDeleteView(LoginRequiredMixin,
-                       generic.DeleteView):
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
     success_url = reverse_lazy("taxi:driver-list")
 
@@ -282,8 +259,7 @@ def toggle_assign_to_car(request, pk):
     return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
 
 
-class RegisterCreateView(SuccessMessageMixin,
-                         generic.CreateView):
+class RegisterCreateView(SuccessMessageMixin, generic.CreateView):
     model = Driver
     form_class = DriverCreationForm
     success_url = reverse_lazy("taxi:index")
@@ -297,3 +273,53 @@ def rate(request: HttpRequest, car_id: int, rating: int) -> HttpResponse:
     car.rating_set.create(user=request.user, rating=rating)
     return index(request)
 
+
+def login_view(request):
+    form = LoginForm(request.POST or None)
+
+    msg = None
+
+    if request.method == "POST":
+
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect("/")
+            else:
+                msg = "Invalid credentials"
+        else:
+            msg = "Error validating the form"
+
+    return render(request, "registration/login.html", {"form": form, "msg": msg})
+
+
+def register_user(request):
+    msg = None
+    success = False
+
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get("username")
+            raw_password = form.cleaned_data.get("password1")
+            user = authenticate(username=username, password=raw_password)
+
+            msg = "Account created successfully."
+            success = True
+
+            # return redirect("/login/")
+
+        else:
+            msg = "Form is not valid"
+    else:
+        form = SignUpForm()
+
+    return render(
+        request,
+        "registration/register.html",
+        {"form": form, "msg": msg, "success": success},
+    )
