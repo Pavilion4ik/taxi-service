@@ -77,7 +77,7 @@ class ManufacturerCreateView(
     model = Manufacturer
     fields = "__all__"
     success_url = reverse_lazy("taxi:manufacturer-list")
-    success_message = "Manufacturer wa added!"
+    success_message = "Manufacturer was added!"
 
 
 class ManufacturerUpdateView(
@@ -164,8 +164,10 @@ class CarCreateView(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView)
 class CarUpdateView(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
     model = Car
     form_class = CarForm
-    success_url = reverse_lazy("taxi:car-list")
     success_message = "Car was successfully updated!"
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("taxi:car-detail", kwargs={"pk": self.get_object().id})
 
 
 class CarDeleteView(SuccessMessageMixin, LoginRequiredMixin, generic.DeleteView):
