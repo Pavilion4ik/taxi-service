@@ -8,6 +8,7 @@ django-crispy-forms==1.14.0
 django-debug==0.1.1
 django_debug_toolbar==3.8.1
 export==0.2.0
+gunicorn==20.1.0
 mypy-extensions==0.4.3
 pathspec==0.10.3
 Pillow==9.4.0
