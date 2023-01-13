@@ -26,7 +26,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
-ALLOWED_HOSTS = ["127.0.0.1", "taxi-service-4vmt.onrender.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "taxi-service-cjyp.onrender.com"]
 
 INTERNAL_IPS = [
     "127.0.0.1",
