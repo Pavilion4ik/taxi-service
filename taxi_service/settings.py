@@ -25,8 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = "RENDER" not in os.environ
-ALLOWED_HOSTS = ["127.0.0.1", "https://taxi-service-z0ma.onrender.com"]
+DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
+ALLOWED_HOSTS = ["127.0.0.1", "taxi-service-4vmt.onrender.com"]
 
 INTERNAL_IPS = [
     "127.0.0.1",
