@@ -17,7 +17,6 @@ import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -26,12 +25,11 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
-ALLOWED_HOSTS = ["127.0.0.1", "taxi-service-4vmt.onrender.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "taxi-service-7a0v.onrender.com"]
 
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
-
 
 # Application definition
 
@@ -82,7 +80,6 @@ WSGI_APPLICATION = "taxi_service.wsgi.application"
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -94,9 +91,8 @@ DATABASES = {
 }
 
 # dj-database-url
-db_from_env = dj_database_url.config(conn_max_age=500) # DATABASE_URL
+db_from_env = dj_database_url.config(conn_max_age=500)  # DATABASE_URL
 DATABASES["default"].update(db_from_env)
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -120,7 +116,6 @@ AUTH_USER_MODEL = "taxi.Driver"
 
 LOGIN_REDIRECT_URL = "/"
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -131,7 +126,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
