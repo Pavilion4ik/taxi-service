@@ -23,6 +23,7 @@ pip install -r requirements.txt
 python manage.py migrate
 set DJANGO_DEBUG=<False to run in DEBUG=False or True for DEBUG=True>
 set SECRET_KEY=<your SECRET_KEY>
+set DATABASE_URL=<your DATABASE_URL>
 python manage.py runserver
 ```
 
