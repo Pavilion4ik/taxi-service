@@ -2,12 +2,27 @@
 
 Django project for managing taxi service
 
+
 ## Check it out!
 [Taxi service deployed to Render](https://taxi-service-7a0v.onrender.com)
+
+
+
+For not admin:
 
 login: user
 
 password: pass12345
+
+For admin:
+
+login: test_admin
+
+password: adminpass123
+
+
+## Demo
+![Website Interface](demo.png)
 
 # Installation
 
@@ -34,6 +49,3 @@ python manage.py runserver
 * Powerful admin panel for advanced  managing
 * Possibility of commenting and rating of car
 * Functionality of adding avatars for drivers and images for cars
-
-## Demo
-![Website Interface](demo.png)
