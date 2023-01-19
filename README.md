@@ -22,7 +22,7 @@ password: adminpass123
 
 
 ## Demo
-![Website Interface](demo.png)
+![Website Interface](demo-img/demo.png)
 
 # Installation
 

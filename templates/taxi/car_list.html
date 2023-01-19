@@ -14,14 +14,35 @@
     <input class="btn btn-secondary" type="submit"  value="🔎">
   </form>
   {% if car_list %}
-    <ul>
-      {% for car in car_list %}
-        <li>
-          <a href="{% url "taxi:car-detail" pk=car.id %} ">{{ car.id }}</a>
-          {{ car.model }} ({{ car.manufacturer.name }})
-        </li>
-      {% endfor %}
-    </ul>
+    <table class="table">
+    <tr>
+      <th>Id</th>
+      <th>Model</th>
+      <th>Manufacturer</th>
+      <th>Drivers</th>
+    </tr>
+    {% for car in car_list %}
+      <tr>
+        <td>{{ car.id }}</td>
+        <td><a href="{% url 'taxi:car-detail' pk=car.id %}">{{ car.model }}</a></td>
+        <td><a href="{% url 'taxi:manufacturer-detail' pk=car.manufacturer_id %}">{{ car.manufacturer }}</a></td>
+        <td>
+          {% if car.drivers.all %}
+            {% for driver in car.drivers.all %}
+            <ul>
+            <li><a href="{% url 'taxi:driver-detail' pk=driver.id %}">{{ driver }}</a>
+            </li>
+            </ul>
+            {% endfor %}
+          {% else %}
+          <li style="margin-left: 25px">There are no drivers yet</li>
+          {% endif %}
+
+        </td>
+      </tr>
+    {% endfor %}
+
+    </table>
   {% else %}
     <p>There are no cars in taxi</p>
   {% endif %}
