@@ -228,10 +228,14 @@ class DriverCreateView(SuccessMessageMixin, LoginRequiredMixin, generic.CreateVi
     success_message = "Driver was successfully created!"
 
 
-class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+class DriverLicenseUpdateView(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
     model = Driver
     form_class = DriverLicenseUpdateForm
-    success_url = reverse_lazy("taxi:driver-list")
+    success_message = "License number was successfully updated!"
+    template_name = "taxi/driver_license_update.html"
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("taxi:driver-detail", kwargs={"pk": self.get_object().id})
 
 
 class DriverAvatarUpdateView(
