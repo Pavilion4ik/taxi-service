@@ -8,13 +8,13 @@ Django project for managing taxi service
 
 
 
-For not admin:
+Test user:
 
 login: user
 
 password: pass12345
 
-For admin:
+Test admin user:
 
 login: test_admin
 
